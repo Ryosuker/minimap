@@ -1,20 +1,20 @@
-html { height: 100% }
-body { height: 100% }
-#map { height: 100%; width: 100%}
-
-
-#pac-input {
-  background-color: #fff;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  margin-left: 12px;
-  padding: 0 11px 0 13px;
-  text-overflow: ellipsis;
-  width: 400px;
+/* 初期化用 */
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
 }
 
-#pac-input:focus {
-  border-color: #4d90fe;
+/* マップ用のCSS */
+.map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  overflow: hidden;
 }
-
