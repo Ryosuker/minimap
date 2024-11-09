@@ -1,0 +1,2 @@
+class DataTest < ApplicationRecord
+end
