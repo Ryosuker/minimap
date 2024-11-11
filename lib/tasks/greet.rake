@@ -1,6 +1,6 @@
 require 'csv' #csvファイルを操作するライブラリの読み込み
 require 'open-uri' #open-uriライブラリを読み込んでいる
-API_KEY = ENV['API_KEY'] #.envに記述しているAPIキーを代入
+API_KEY = ENV['GOOGLE_MAPS_API_KEY']  #.envに記述しているAPIキーを代入
 
 namespace :Cafe do
   desc 'Fetch and save shop details'
