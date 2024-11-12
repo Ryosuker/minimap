@@ -1,62 +1,73 @@
-// マップオブジェクトの変数を空で宣言
-let map;
-let myLocation;
-let mapOptions = {
-  zoom: 14, // 拡大率
-  center: { // 中心座標を指定
-    lat: 35.6811673, // 緯度
-    lng: 139.7648629 // 経度
-  }
-};  
+var map;
+var pin;
+var circle;
+var lat = 35.681167;
+var lng = 139.767052;
 
-function initAutocomplete() {
-// 位置情報取得が成功したら
-let success = (pos) => {
-  let nowLat = pos.coords.latitude; // 緯度
-  let nowLng = pos.coords.longitude; // 経度
-  // 現在地の緯度・経度を変数に格納
-  let nowLatLng = new google.maps.LatLng(nowLat, nowLng);
 
-  // マップオプションを変数に格納
-  let mapOptions = {
-    zoom: 14, // 拡大率
-    center: nowLatLng // 中心座標を指定
+function initMap() {
+  // GoogleMapの作成
+  map = new google.maps.Map(document.getElementById("js-map"), {
+    zoom: 14,
+    center: new google.maps.LatLng(lat, lng),
+    mapTypeId: 'roadmap'
+  });
+  
+  // ピンの作成
+  pin = new google.maps.Marker({
+    map: map,
+    draggable: true,
+    position: new google.maps.LatLng(lat, lng),
+  });
+  
+  // サークルの作成
+  circle = new google.maps.Circle({
+    map: map,
+    center: new google.maps.LatLng(lat, lng),
+    // 半径を指定（半径1キロ）
+    radius: 1000,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35,
+  });
+  
+  // マップに対して、ドラッグ（スワイプ）することでイベントが発火するように設定
+  map.addListener('dragend', updateSearch);
+}
+window.initMap = initMap;
+
+function updateSearch() {
+  // ピンがマップの中央に来るように設定
+  pin.setPosition(map.getCenter());
+  // サークルがマップの中央に来るように設定
+  circle.setCenter(map.getCenter());
+  // filterSearchの呼び出し
+  filterSearch();
+}
+
+function filterSearch() {
+  // サークルの中心の緯度と経度を取得
+  var circleCenter = circle.getCenter();
+  // 取得した緯度と経度を扱えるように、circleLatLngオブジェクトに格納
+  var circleLatLng = {
+    latitude: circleCenter.lat(),
+    longitude: circleCenter.lng()
   };
 
-  // マップオブジェクト作成
-  map = new google.maps.Map(
-    document.getElementById('js-map'),
-    mapOptions
-  );
-
-  // マップにマーカーを表示する
-  myLocation = new google.maps.Marker({
-    map: map, // mapに対して指定（マップオブジェクト作成したやつ）
-    position: mapOptions.center, // mapOptionsから座標を指定
-    icon: {
-      url: "<%= image_path('library.png') %>", // icon画像（png画像でも可）
-      scaledSize: new google.maps.Size(64, 64) // 表示するアイコンサイズ
-    },
-    title: '現在地' // アイコンにマウスホバーすると出てくる文言
-  });
+  // fetchを使用して、homeコントローラへリクエストを送信する。この際に、クエリ文字列として緯度と経度をもたせる。
+  // こうすることで、homeコントローラでparams[:latitude」の形で使用できる。
+  fetch(`/home.json?latitude=${circleLatLng.latitude}&longitude=${circleLatLng.longitude}`)
+    .then(response => response.json())
+    .then(data => {
+      clearMarkers();
+      // updateShopListは、検索でヒットしたショップを表示し、マップ上にマーカーを表示する関数
+      // 今回は説明を省きます。詳しくはGithubをご覧ください。
+      updateShopList('clothes', data.clothes);
+      updateShopList('cafes', data.cafes);
+    })
+    .catch(error => console.error('Error:', error));
 }
 
-// 位置情報取得が失敗したら
-let error = (err) => {
-  // エラーメッセージ
-  msg = 'エラーが発生しました: ' + err;
-  console.log(msg);
-}
-
-// getCurrentPositionのオプション
-let options = {
-  enableHighAccuracy: false,
-  timeout: 5000,
-  maximumAge: 0
-};
-
-// 位置情報を取得
-navigator.geolocation.getCurrentPosition(success, error, options);
-}
-
-window.addEventListener('turbo:load', initAutocomplete);
+window.addEventListener('turbo:load', initMap);
