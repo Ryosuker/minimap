@@ -1,34 +1,73 @@
+var map;
+var pin;
+var circle;
+var lat = 35.681167;
+var lng = 139.767052;
+
+
 function initMap() {
-  'use strict';
-
-  var target = document.getElementById('js-map');
-  var map;
-  var tokyo = {lat: 35.681167, lng: 139.767052};
- 
-
-  map = new google.maps.Map(target, {
-    center: tokyo,
-    zoom: 15,
-    disableDefaultUI: true,
-    zoomControl: true,
-    clickableIcons: false
+  // GoogleMapの作成
+  map = new google.maps.Map(document.getElementById("js-map"), {
+    zoom: 14,
+    center: new google.maps.LatLng(lat, lng),
+    mapTypeId: 'roadmap'
   });
-
-  map.addListener('click', function(e) {
-    var marker = new google.maps.Marker({
-      position: e.latLng,
-      map: this,
-      animation: google.maps.Animation.DROP
-    });
-    var infoWindow = new google.maps.InfoWindow({
-      content: e.latLng.toString(),
-      maxWidth: 300
-    });
-    marker.addListener('click', function() {
-      infoWindow.open(map, marker);
-    });
+  
+  // ピンの作成
+  pin = new google.maps.Marker({
+    map: map,
+    draggable: true,
+    position: new google.maps.LatLng(lat, lng),
   });
+  
+  // サークルの作成
+  circle = new google.maps.Circle({
+    map: map,
+    center: new google.maps.LatLng(lat, lng),
+    // 半径を指定（半径1キロ）
+    radius: 1000,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35,
+  });
+  
+  // マップに対して、ドラッグ（スワイプ）することでイベントが発火するように設定
+  map.addListener('dragend', updateSearch);
+}
+window.initMap = initMap;
 
+function updateSearch() {
+  // ピンがマップの中央に来るように設定
+  pin.setPosition(map.getCenter());
+  // サークルがマップの中央に来るように設定
+  circle.setCenter(map.getCenter());
+  // filterSearchの呼び出し
+  filterSearch();
+}
+
+function filterSearch() {
+  // サークルの中心の緯度と経度を取得
+  var circleCenter = circle.getCenter();
+  // 取得した緯度と経度を扱えるように、circleLatLngオブジェクトに格納
+  var circleLatLng = {
+    latitude: circleCenter.lat(),
+    longitude: circleCenter.lng()
+  };
+
+  // fetchを使用して、homeコントローラへリクエストを送信する。この際に、クエリ文字列として緯度と経度をもたせる。
+  // こうすることで、homeコントローラでparams[:latitude」の形で使用できる。
+  fetch(`/home.json?latitude=${circleLatLng.latitude}&longitude=${circleLatLng.longitude}`)
+    .then(response => response.json())
+    .then(data => {
+      clearMarkers();
+      // updateShopListは、検索でヒットしたショップを表示し、マップ上にマーカーを表示する関数
+      // 今回は説明を省きます。詳しくはGithubをご覧ください。
+      updateShopList('clothes', data.clothes);
+      updateShopList('cafes', data.cafes);
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 window.addEventListener('turbo:load', initMap);
