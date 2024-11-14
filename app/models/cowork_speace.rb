@@ -1,0 +1,2 @@
+class CoworkSpeace < WorkPlace
+end
