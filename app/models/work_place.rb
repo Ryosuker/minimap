@@ -6,7 +6,7 @@ class WorkPlace < ApplicationRecord
                    lat_column_name: :latitude,
                    lng_column_name: :longitude
 
-  has_many :shop_images, dependent: :destroy
+  has_many :work_place_images, dependent: :destroy
   # has_many :reviews, dependent: :destroy
 
   validates :name, presence: true
@@ -14,7 +14,7 @@ class WorkPlace < ApplicationRecord
   validates :longitude, presence: true
   validates :place_id, presence: true
 
-
+  #保留/コントローラーヴューに追記必要
   #半径10km以内の施設を検索
   def closest_shop(latitude, longitude)
     if type == 'Library'
