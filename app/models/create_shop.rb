@@ -1,2 +1,0 @@
-class CreateShop < ApplicationRecord
-end
