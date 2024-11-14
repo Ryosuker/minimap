@@ -30,7 +30,8 @@ namespace :WorkPlace do
         result[:type] = 'Cafe'
         result[:name] = workplace['施設名']
         result[:postal_code] = place_detail_data['result']['address_components'].find { |c| c['types'].include?('postal_code') }&.fetch('long_name', nil)
-
+        result[:area] = place_detail_data['result']['address_components'].find { |c| c['types'].include?('locality') }&.fetch('long_name', nil)
+        
         full_address = place_detail_data['result']['formatted_address']
         result[:address] = full_address.sub(/\A[^ ]+/, '')
 
