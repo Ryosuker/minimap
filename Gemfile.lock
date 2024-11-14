@@ -92,6 +92,10 @@ GEM
       dotenv (= 3.1.4)
       railties (>= 6.1)
     erubi (1.13.0)
+    geokit (1.14.0)
+    geokit-rails (2.5.0)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -225,6 +229,7 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails
+  geokit-rails
   importmap-rails
   jbuilder
   mysql2 (~> 0.5)
