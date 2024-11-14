@@ -1,0 +1,2 @@
+class WorkPlaceImage < ApplicationRecord
+end
