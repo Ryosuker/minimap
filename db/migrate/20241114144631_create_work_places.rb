@@ -1,6 +1,7 @@
 class CreateWorkPlaces < ActiveRecord::Migration[7.0]
   def change
     create_table :work_places do |t|
+      t.string :type, null: false #施設タイプ
       t.string :name, null: false #施設名
       t.string :postal_code       #郵便番号
       t.string :area              #市町村と東京23区
