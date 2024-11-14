@@ -5,15 +5,10 @@ API_KEY = ENV['GOOGLE_MAPS_API_KEY']
 namespace :WorkPlace do
   desc 'Fetch and save workplace details'
   task :get_and_save_details => :environment do
-    #CSVファイルにあるphone_numberを元に一意のplace_idを返す関数
-    def get_place_id(phone_number)
-      client = GooglePlaces::Client.new(API_KEY)
-      spot = client.spots_by_query(phone_number).first
-      spot.place_id if spot
-    end
-    #place_idから詳細情報（Place Details）を取得してresultハッシュを返す関数
+
+    #place_idから詳細情報（Place Details）を取得してresultハッシュを返す
     def get_detail_data(workplace)
-      place_id = get_place_id(workplace['電話番号'])
+      place_id = workplace['place_id']
 
       if place_id
         existing_Workplace = WorkPlace.find_by(place_id: place_id) # データベース内を検索
@@ -52,7 +47,7 @@ namespace :WorkPlace do
         nil
       end
     end
-    #resultハッシュを
+    #resultハッシュ内のplace_idで施設の写真を５枚取得して返す
     def photo_reference_data(place_data)
       if place_data
         place_id = place_data[:place_id]
