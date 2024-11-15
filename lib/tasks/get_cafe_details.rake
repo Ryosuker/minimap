@@ -2,7 +2,7 @@ require 'csv'
 require 'open-uri'
 API_KEY = ENV['GOOGLE_MAPS_API_KEY']
 
-namespace :WorkPlace do
+namespace :Cafe do
   desc 'Fetch and save workplace details'
   task :get_and_save_details => :environment do
 
