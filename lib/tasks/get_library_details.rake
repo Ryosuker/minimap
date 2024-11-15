@@ -1,11 +1,10 @@
 require 'csv'
 require 'open-uri'
-API_KEY = ENV['GOOGLE_MAPS_API_KEY']
 
 namespace :Library do
   desc 'Fetch and save workplace details'
   task :get_and_save_details => :environment do
-
+    API_KEY = ENV['GOOGLE_MAPS_API_KEY']
     #place_idから詳細情報（Place Details）を取得してresultハッシュを返す
     def get_detail_data(workplace)
       place_id = workplace['place_id']
