@@ -73,11 +73,11 @@ end
 
 gem 'dotenv-rails'
 
-# Geolocation
-gem 'geokit-rails'
-
 # google_places_api
 gem 'google_places'
+
+# Geolocation
+gem 'geokit-rails'
 
 # javasctipt
 gem 'gon'
