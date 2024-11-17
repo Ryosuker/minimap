@@ -92,7 +92,7 @@ namespace :Cowork do
       photo_references = photo_reference_data(place_data)
       if photo_references.present?
         photo_references.each do |photo|
-          WorkPlaceImage.create!(workplace: workplace, image: photo)
+          WorkPlaceImage.create!(work_place: workplace, image: photo)
         end
         puts "WorkPlaceImageを保存しました: #{row['施設名']}"
         puts "----------"
