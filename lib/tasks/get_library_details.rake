@@ -1,19 +1,13 @@
 require 'csv'
 require 'open-uri'
-API_KEY = ENV['GOOGLE_MAPS_API_KEY']
 
-namespace :WorkPlace do
+namespace :Library do
   desc 'Fetch and save workplace details'
   task :get_and_save_details => :environment do
-    #CSVファイルにあるphone_numberを元に一意のplace_idを返す関数
-    def get_place_id(phone_number)
-      client = GooglePlaces::Client.new(API_KEY)
-      spot = client.spots_by_query(phone_number).first
-      spot.place_id if spot
-    end
-    #place_idから詳細情報（Place Details）を取得してresultハッシュを返す関数
+    API_KEY = ENV['GOOGLE_MAPS_API_KEY']
+    #place_idから詳細情報（Place Details）を取得してresultハッシュを返す
     def get_detail_data(workplace)
-      place_id = get_place_id(workplace['電話番号'])
+      place_id = workplace['place_id']
 
       if place_id
         existing_Workplace = WorkPlace.find_by(place_id: place_id) # データベース内を検索
@@ -32,10 +26,11 @@ namespace :WorkPlace do
         place_detail_data = JSON.parse(place_detail_page)
 
         result = {}
-        result[:type] = 'Cafe'
+        result[:type] = 'Library'
         result[:name] = workplace['施設名']
         result[:postal_code] = place_detail_data['result']['address_components'].find { |c| c['types'].include?('postal_code') }&.fetch('long_name', nil)
-
+        result[:area] = place_detail_data['result']['address_components'].find { |c| c['types'].include?('locality') }&.fetch('long_name', nil)
+        
         full_address = place_detail_data['result']['formatted_address']
         result[:address] = full_address.sub(/\A[^ ]+/, '')
 
@@ -52,7 +47,7 @@ namespace :WorkPlace do
         nil
       end
     end
-    #resultハッシュを
+    #resultハッシュ内のplace_idで施設の写真を５枚取得して返す
     def photo_reference_data(place_data)
       if place_data
         place_id = place_data[:place_id]
@@ -82,21 +77,21 @@ namespace :WorkPlace do
       end
     end
 
-    csv_file = 'lib/cafes.csv'
+    csv_file = 'lib/Libraries.csv'
     CSV.foreach(csv_file, headers: true) do |row|
       place_data = get_detail_data(row)
       if place_data
         workplace = WorkPlace.create!(place_data)
-        puts "WorkPlace(Cafe)を保存しました: #{row['施設名']}"
+        puts "WorkPlace(Library)を保存しました: #{row['施設名']}"
         puts "----------"
       else
-        puts "WorkPlace(Cafe)の保存に失敗しました: #{row['施設名']}"
+        puts "WorkPlace(Library)の保存に失敗しました: #{row['施設名']}"
       end
 
       photo_references = photo_reference_data(place_data)
       if photo_references.present?
         photo_references.each do |photo|
-          WorkPlaceImage.create!(workplace: workplace, image: photo)
+          WorkPlaceImage.create!(work_place: workplace, image: photo)
         end
         puts "WorkPlaceImageを保存しました: #{row['施設名']}"
         puts "----------"

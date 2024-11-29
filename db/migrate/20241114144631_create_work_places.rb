@@ -1,8 +1,10 @@
-class CreateCreateShops < ActiveRecord::Migration[7.0]
+class CreateWorkPlaces < ActiveRecord::Migration[7.0]
   def change
-    create_table :create_shops do |t|
-      t.string :name, null: false #店名
+    create_table :work_places do |t|
+      t.string :type, null: false #施設タイプ
+      t.string :name, null: false #施設名
       t.string :postal_code       #郵便番号
+      t.string :area              #市町村と東京23区
       t.string :address           #住所
       t.string :phone_number      #電話番号
       t.string :opening_hours     #営業時間

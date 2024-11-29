@@ -2,11 +2,10 @@ require 'csv'
 require 'open-uri'
 require 'json'
 
-API_KEY = ENV['GOOGLE_MAPS_API_KEY']
-
 namespace :google_places do
   desc "Fetch library data and save as CSV"
   task fetch_data: :environment do
+    API_KEY = ENV['GOOGLE_MAPS_API_KEY']
     tokyoku = ["足立区","荒川区","板橋区","江戸川区","大田区","江東区","品川区","渋谷区","新宿区","杉並区","墨田区","世田谷区","台東区","中央区","千代田区","豊島区","中野区","練馬区","文京区","港区","目黒区"]
     cafeshop = ["コワーキングスペース"]
 

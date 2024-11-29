@@ -72,3 +72,12 @@ group :test do
 end
 
 gem 'dotenv-rails'
+
+# google_places_api
+gem 'google_places'
+
+# Geolocation
+gem 'geokit-rails'
+
+# javasctipt
+gem 'gon'
