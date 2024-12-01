@@ -13,8 +13,11 @@ class MapsController < ApplicationController
       format.html
       format.json do
         render json: {
-          clothes: @clothes.as_json(include: :shop_images), #⭐️あとで修正箇所
-          cafes: @cafes.as_json(include: :shop_images)      #⭐️あとで修正箇所
+          # clothes: @clothes.as_json(include: :shop_images), #⭐️元の記述
+          # cafes: @cafes.as_json(include: :shop_images)      #⭐️元の記述
+          cafes: @cafes.as_json(include: :work_place_images)      #⭐️あとで修正箇所
+          cowork_speaces: @cowork_speaces.as_json(include: :work_place_images)      #⭐️あとで修正箇所
+          libraries: @libraries.as_json(include: :work_place_images)      #⭐️あとで修正箇所
         }
       end
     end
@@ -24,9 +27,10 @@ class MapsController < ApplicationController
 
   def search_shops(latitude, longitude)
     # セレクトショップとカフェそれぞれで検索をかけます。
-    @clothes = circle_search(Clothes, latitude, longitude)   #⭐️あとで修正箇所
+    @clothes = circle_search(Clothes, latitude, longitude)   #⭐️元の記述
     @cafes = circle_search(Cafe, latitude, longitude)        #⭐️あとで修正箇所
-    #⭐️あとでCoworkを追加修正箇所
+    @cafes = circle_search(CoworkSpeace, latitude, longitude)        #⭐️あとで修正箇所
+    @cafes = circle_search(Library, latitude, longitude)        #⭐️あとで修正箇所
   end
 
   def circle_search(model, latitude, longitude)
