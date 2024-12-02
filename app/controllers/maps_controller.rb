@@ -29,8 +29,8 @@ class MapsController < ApplicationController
     # セレクトショップとカフェそれぞれで検索をかけます。
     @clothes = circle_search(Clothes, latitude, longitude)   #⭐️元の記述
     @cafes = circle_search(Cafe, latitude, longitude)        #⭐️あとで修正箇所
-    @cafes = circle_search(CoworkSpeace, latitude, longitude)        #⭐️あとで修正箇所
-    @cafes = circle_search(Library, latitude, longitude)        #⭐️あとで修正箇所
+    @cowork_speaces = circle_search(CoworkSpeace, latitude, longitude)        #⭐️あとで修正箇所
+    @libraries = circle_search(Library, latitude, longitude)        #⭐️あとで修正箇所
   end
 
   def circle_search(model, latitude, longitude)
