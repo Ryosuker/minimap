@@ -1,2 +1,0 @@
-class CoworkSpeace < WorkPlace
-end
