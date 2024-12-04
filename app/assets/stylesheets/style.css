@@ -19,3 +19,8 @@ html, body {
   min-height: 400px;
   overflow: hidden;
 }
+
+#map{
+  width: 50%;
+  height: 50%;
+}
