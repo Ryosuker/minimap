@@ -16,19 +16,19 @@ class WorkPlace < ApplicationRecord
 
   #保留/コントローラーヴューに追記必要
   #半径10km以内の施設を検索
-  def closest_shop(latitude, longitude)
+  def closest_place(latitude, longitude)
     if type == 'Library'
       target_location = Geokit::LatLng.new(latitude, longitude)
-      library_closest_shop = Library.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
-      library_closest_shop
+      library_closest_place = Library.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
+      library_closest_place
     elsif  type == 'Cafe'
       target_location = Geokit::LatLng.new(latitude, longitude)
-      cafe_closest_shop = Cafe.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
-      cafe_closest_shop
-    elsif  type == 'Cowork_speace'
+      cafe_closest_place = Cafe.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
+      cafe_closest_place
+    elsif  type == 'Cowork'
       target_location = Geokit::LatLng.new(latitude, longitude)
-      cowork_speace_closest_shop = CoworkSpeace.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
-      cowork_speace_closest_shop
+      cowork_closest_place = Cowork.where.not(id: self.id).closest(origin: target_location, units: :kms, within: 10).first
+      cowork_closest_place
     end
   end
 end

@@ -2,7 +2,7 @@ module MapConcern
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_map_data, only: :home
+    before_action :set_map_data, only: :index
   end
 
   def set_map_data
