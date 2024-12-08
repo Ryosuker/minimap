@@ -28,6 +28,7 @@
   <input id="pac-input"  placeholder="場所を検索">
 <%= javascript_include_tag "google_maps" %>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY']%>&libraries=places&callback=initMap" ></script>
+
 <%# 検索結果リスト領域 ーー元はhomeファイルにあるーー%>
 <div class="card w-11/12 bg-base-100 shadow-md z-0 mt-5 mb-10">
     <div class="md:flex">
