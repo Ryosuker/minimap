@@ -8,7 +8,7 @@ var coworksMarker = [];
 var librariesMarker = [];
 var API_KEY = gon.api_key;
 var currentFilter = 'all';
-var maxMarkers = 100;
+var maxMarkers = 10;
 var infoWindow;
 
 function initMap() {
