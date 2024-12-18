@@ -16,7 +16,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 14,
     center: new google.maps.LatLng(lat, lng),
-    mapTypeId: 'roadmap',
+    mapTypeId: 'hybrid',
     zoomControl: true,
     streetViewControl: true,
     fullscreenControl: false,
